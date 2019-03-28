@@ -1,0 +1,27 @@
+{
+  "name": "face-detect-app-api",
+  "version": "1.0.0",
+  "description": "BE of the face-detect-app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crux-in-lan/face-detect-app-api.git"
+  },
+  "keywords": [
+    "face",
+    "detect",
+    "api"
+  ],
+  "author": "N.Vasilev",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/crux-in-lan/face-detect-app-api/issues"
+  },
+  "homepage": "https://github.com/crux-in-lan/face-detect-app-api#readme",
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
