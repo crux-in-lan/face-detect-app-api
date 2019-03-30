@@ -61,8 +61,13 @@ app.post('/signin',(req,res) => {
 	});
 });
 
-app.put('/detect',(req,res)=>{
+app.put('/detect/:userId',(req,res)=>{
+	
+	const {userId} = req.params;
 
+	db('tmp.users').increment('detections').where('id','=',userId)
+	.then(result =>  res.json({data: 'Done detecting'}))
+	.catch(err => res.status(400).json({err: err}));
 })
 
 app.listen(3001);
