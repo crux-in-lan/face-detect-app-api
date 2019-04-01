@@ -4,10 +4,12 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt-nodejs');
 const moment = require('moment');
 const db = require('knex')(db_webapps);
+const cors = require('cors');
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.post('/register',(req,res) => {
 	const {email, username, password} = req.body;
@@ -15,7 +17,7 @@ app.post('/register',(req,res) => {
 	db.transaction(trx => {
 		trx.insert({email,username,joined}).into('tmp.users').returning('email')
 		.then(result => {
-			console.log("second obj",{email:result[0],password:bcrypt.hashSync(password)});
+			// console.log("second obj",{email:result[0],password:bcrypt.hashSync(password)});
 			trx.insert({email:result[0],hash:bcrypt.hashSync(password)})
 			.into('tmp.login')
 			.then(res1 => {
@@ -37,7 +39,7 @@ app.post('/register',(req,res) => {
 
 app.post('/signin',(req,res) => {
 	const {email, password} = req.body;
-
+	// console.log(req.body);
 	db.select('hash').from('tmp.login').where('email','=',email)
 	.then(result => {
 		if(result.length) {
@@ -65,8 +67,8 @@ app.put('/detect/:userId',(req,res)=>{
 	
 	const {userId} = req.params;
 
-	db('tmp.users').increment('detections').where('id','=',userId)
-	.then(result =>  res.json({data: 'Done detecting'}))
+	db('tmp.users').increment('detections').where('id','=',userId).returning('detections')
+	.then(result =>  res.json({data: result[0]}))
 	.catch(err => res.status(400).json({err: err}));
 })
 
